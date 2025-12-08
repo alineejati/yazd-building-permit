@@ -20,4 +20,14 @@ const findAll = () => {
     return requests;
 };
 
-module.exports = { create, findAll };
+// New method for US3: Update request status
+const updateStatus = (id, newStatus) => {
+    const request = requests.find(r => r.id === parseInt(id));
+    if (request) {
+        request.status = newStatus;
+        return request;
+    }
+    return null; // Return null if request not found
+};
+
+module.exports = { create, findAll, updateStatus };

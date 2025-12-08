@@ -21,4 +21,26 @@ const getRequests = (req, res) => {
     res.status(200).json(requests);
 };
 
-module.exports = { createRequest, getRequests };
+// Controller for US3 - بررسی کارشناس و تغییر وضعیت
+const updateRequestStatus = (req, res) => {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    if (!status) {
+        return res.status(400).json({ message: "وضعیت جدید (status) الزامی است." });
+    }
+    
+    // Attempt to update the status in the model
+    const updatedRequest = RequestModel.updateStatus(id, status);
+
+    if (!updatedRequest) {
+        return res.status(404).json({ message: "درخواست با این شناسه یافت نشد." });
+    }
+
+    res.status(200).json({
+        message: `وضعیت درخواست #${id} به '${status}' تغییر یافت.`,
+        request: updatedRequest
+    });
+};
+
+module.exports = { createRequest, getRequests, updateRequestStatus };
