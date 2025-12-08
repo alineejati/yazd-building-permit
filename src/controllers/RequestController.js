@@ -42,5 +42,16 @@ const updateRequestStatus = (req, res) => {
         request: updatedRequest
     });
 };
+// Controller for US4 - مشاهده جزئیات درخواست
+const getRequestDetails = (req, res) => {
+    const { id } = req.params;
 
-module.exports = { createRequest, getRequests, updateRequestStatus };
+    const request = RequestModel.findById(id);
+
+    if (!request) {
+        return res.status(404).json({ message: "درخواست با این شناسه یافت نشد." });
+    }
+
+    res.status(200).json(request);
+};
+module.exports = { createRequest, getRequests, updateRequestStatus, getRequestDetails };
