@@ -33,4 +33,21 @@ const updateStatus = (id, newStatus) => {
 const findById = (id) => {
     return requests.find(r => r.id === parseInt(id));
 };
-module.exports = { create, findAll, updateStatus, findById };
+// New method for US5: Cancel a request
+const cancelRequest = (id) => {
+    const request = requests.find(r => r.id === parseInt(id));
+
+    if (!request) {
+        return { success: false, message: "درخواست یافت نشد." };
+    }
+
+    // US5 Acceptance Criteria: Only requests with status 'ثبت اولیه' can be cancelled
+    if (request.status !== "ثبت اولیه") {
+        return { success: false, message: `فقط درخواست‌هایی با وضعیت 'ثبت اولیه' قابل لغو هستند. وضعیت فعلی: ${request.status}` };
+    }
+
+    // Change status to 'لغو شده'
+    request.status = "لغو شده";
+    return { success: true, request };
+};
+module.exports = { create, findAll, updateStatus, findById, cancelRequest };

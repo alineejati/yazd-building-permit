@@ -54,4 +54,24 @@ const getRequestDetails = (req, res) => {
 
     res.status(200).json(request);
 };
-module.exports = { createRequest, getRequests, updateRequestStatus, getRequestDetails };
+// Controller for US5 - لغو درخواست توسط مالک
+const deleteRequest = (req, res) => {
+    const { id } = req.params;
+
+    const result = RequestModel.cancelRequest(id);
+
+    if (!result.success) {
+        // Handle Request Not Found (404) or Status Conflict (409)
+        if (result.message.includes("یافت نشد")) {
+            return res.status(404).json({ message: result.message });
+        }
+        // Conflict error for invalid status
+        return res.status(409).json({ message: result.message });
+    }
+
+    res.status(200).json({
+        message: `درخواست #${id} با موفقیت لغو شد.`,
+        request: result.request
+    });
+};
+module.exports = { createRequest, getRequests, updateRequestStatus, getRequestDetails, deleteRequest };
