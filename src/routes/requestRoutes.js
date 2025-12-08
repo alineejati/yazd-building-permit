@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { createRequest, getRequests, updateRequestStatus, getRequestDetails } = require('../controllers/RequestController');
+const { createRequest, getRequests, updateRequestStatus, getRequestDetails, deleteRequest } = require('../controllers/RequestController');
 
 // Route for US1 (POST /api/requests)
 router.post('/requests', createRequest);
@@ -11,4 +11,6 @@ router.get('/requests', getRequests);
 router.get('/requests/:id', getRequestDetails);
 // Route for US3 (PATCH /api/requests/:id) - تغییر وضعیت درخواست
 router.patch('/requests/:id', updateRequestStatus);
+// Route for US5 (DELETE /api/requests/:id) - لغو درخواست
+router.delete('/requests/:id', deleteRequest);
 module.exports = router;
