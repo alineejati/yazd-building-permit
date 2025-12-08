@@ -29,5 +29,8 @@ const updateStatus = (id, newStatus) => {
     }
     return null; // Return null if request not found
 };
-
-module.exports = { create, findAll, updateStatus };
+// New method for US4: Find a request by ID
+const findById = (id) => {
+    return requests.find(r => r.id === parseInt(id));
+};
+module.exports = { create, findAll, updateStatus, findById };
