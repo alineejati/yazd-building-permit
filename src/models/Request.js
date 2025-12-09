@@ -67,4 +67,21 @@ const markAsPaid = (id) => {
     request.status = "پرداخت شده";
     return { success: true, request };
 };
-module.exports = { create, findAll, updateStatus, findById, cancelRequest, markAsPaid };
+// New method for US Final: Issue the final permit
+const issuePermit = (id) => {
+    const request = requests.find(r => r.id === parseInt(id));
+
+    if (!request) {
+        return { success: false, message: "درخواست یافت نشد." };
+    }
+
+    // Acceptance Criteria: Only requests with status 'پرداخت شده' can be issued a permit
+    if (request.status !== "پرداخت شده") {
+        return { success: false, message: `فقط درخواست‌هایی با وضعیت 'پرداخت شده' قابل صدور جواز هستند. وضعیت فعلی: ${request.status}` };
+    }
+
+    // Change status to 'جواز صادر شد'
+    request.status = "جواز صادر شد";
+    return { success: true, request };
+};
+module.exports = { create, findAll, updateStatus, findById, cancelRequest, markAsPaid, issuePermit };

@@ -89,4 +89,24 @@ const fakePayment = (req, res) => {
         request: result.request
     });
 };
-module.exports = { createRequest, getRequests, updateRequestStatus, getRequestDetails, deleteRequest, fakePayment };
+// Controller for Final US: Issue Final Permit
+const issueFinalPermit = (req, res) => {
+    const { id } = req.params;
+
+    const result = RequestModel.issuePermit(id);
+
+    if (!result.success) {
+        // Handle Request Not Found (404) or Status Conflict (409)
+        if (result.message.includes("یافت نشد")) {
+            return res.status(404).json({ message: result.message });
+        }
+        // Conflict error for invalid status
+        return res.status(409).json({ message: result.message });
+    }
+
+    res.status(200).json({
+        message: `جواز درخواست #${id} با موفقیت صادر شد.`,
+        request: result.request
+    });
+};
+module.exports = { createRequest, getRequests, updateRequestStatus, getRequestDetails, deleteRequest, fakePayment, issueFinalPermit };
