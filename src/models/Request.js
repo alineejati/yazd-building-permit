@@ -50,4 +50,21 @@ const cancelRequest = (id) => {
     request.status = "لغو شده";
     return { success: true, request };
 };
-module.exports = { create, findAll, updateStatus, findById, cancelRequest };
+// New method for Fake Payment
+const markAsPaid = (id) => {
+    const request = requests.find(r => r.id === parseInt(id));
+
+    if (!request) {
+        return { success: false, message: "درخواست یافت نشد." };
+    }
+    
+    // Check if the request is not already canceled
+    if (request.status === "لغو شده") {
+        return { success: false, message: "این درخواست قبلاً لغو شده است." };
+    }
+    
+    // Change status to 'پرداخت شده'
+    request.status = "پرداخت شده";
+    return { success: true, request };
+};
+module.exports = { create, findAll, updateStatus, findById, cancelRequest, markAsPaid };

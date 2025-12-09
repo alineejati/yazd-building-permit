@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { createRequest, getRequests, updateRequestStatus, getRequestDetails, deleteRequest } = require('../controllers/RequestController');
+const { createRequest, getRequests, updateRequestStatus, getRequestDetails, deleteRequest, fakePayment } = require('../controllers/RequestController');
 
 // Route for US1 (POST /api/requests)
 router.post('/requests', createRequest);
@@ -13,4 +13,6 @@ router.get('/requests/:id', getRequestDetails);
 router.patch('/requests/:id', updateRequestStatus);
 // Route for US5 (DELETE /api/requests/:id) - لغو درخواست
 router.delete('/requests/:id', deleteRequest);
+// Route for Fake Payment (POST /api/requests/:id/pay)
+router.post('/requests/:id/pay', fakePayment);
 module.exports = router;
