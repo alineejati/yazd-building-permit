@@ -74,4 +74,19 @@ const deleteRequest = (req, res) => {
         request: result.request
     });
 };
-module.exports = { createRequest, getRequests, updateRequestStatus, getRequestDetails, deleteRequest };
+// Controller for Fake Payment
+const fakePayment = (req, res) => {
+    const { id } = req.params;
+
+    const result = RequestModel.markAsPaid(id);
+
+    if (!result.success) {
+        return res.status(400).json({ message: result.message });
+    }
+
+    res.status(200).json({
+        message: `پرداخت عوارض درخواست #${id} با موفقیت شبیه‌سازی و وضعیت به 'پرداخت شده' تغییر یافت.`,
+        request: result.request
+    });
+};
+module.exports = { createRequest, getRequests, updateRequestStatus, getRequestDetails, deleteRequest, fakePayment };
